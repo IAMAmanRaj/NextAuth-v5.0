@@ -2,7 +2,10 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getUserByEmail } from "./data/users";
+
+import { User } from "./model/user-model";
+import bcrypt from "bcryptjs";
+
 export const {
   handlers: { GET, POST },
   auth,
@@ -22,10 +25,15 @@ export const {
         if (credentials === null) return null;
 
         try {
-          const user = getUserByEmail(credentials?.email);
-          console.log(user);
+          const user = await User.findOne({
+            email: credentials?.email,
+          });
+
           if (user) {
-            const isMatch = user?.password === credentials.password;
+            const isMatch = await bcrypt.compare(
+              credentials.password,
+              user.password
+            );
 
             if (isMatch) {
               return user;

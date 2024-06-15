@@ -1,42 +1,53 @@
 "use client";
 
-import SocialLogins from "./SocialLogins";
-
-import { doCredentialLogin } from "@/app/actions";
-
-import { useState } from "react";
+import SocialLogin from "./SocialLogins";
 import { useRouter } from "next/navigation";
-
-const LoginForm = () => {
+const RegistrationForm = () => {
   const router = useRouter();
-  const [error, setError] = useState("");
 
-  async function onSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+
     try {
       const formData = new FormData(event.currentTarget);
 
-      const response = await doCredentialLogin(formData);
+      const name = formData.get("name");
+      const email = formData.get("email");
+      const password = formData.get("password");
 
-      if (!!response.error) {
-        console.error(response.error);
-        setError(response.error.message);
-      } else {
-        router.push("/home");
-      }
+      const response = await fetch(`/api/register`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      response.status === 201 && router.push("/");
     } catch (e) {
-      console.error(e);
-      setError("Check your Credentials");
+      console.error(e.message);
     }
   }
 
   return (
     <>
-      <div className="text-xl text-red-500">{error}</div>
       <form
+        onSubmit={handleSubmit}
         className="my-5 flex flex-col items-center border p-3 border-gray-200 rounded-md"
-        onSubmit={onSubmit}
       >
+        <div className="my-2">
+          <label htmlFor="email">Full Name</label>
+          <input
+            className="border mx-2 border-gray-500 rounded"
+            type="text"
+            name="name"
+            id="name"
+          />
+        </div>
         <div className="my-2">
           <label htmlFor="email">Email Address</label>
           <input
@@ -61,12 +72,12 @@ const LoginForm = () => {
           type="submit"
           className="bg-orange-300 mt-4 rounded flex justify-center items-center w-36"
         >
-          Credential Login
+          Register
         </button>
       </form>
-      <SocialLogins />
+      <SocialLogin />
     </>
   );
 };
 
-export default LoginForm;
+export default RegistrationForm;
