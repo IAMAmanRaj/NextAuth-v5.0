@@ -1,8 +1,8 @@
-import { login } from "@/app/actions";
+import { doSocialLogin } from "@/app/actions";
 
 const SocialLogin = () => {
   return (
-    <form action={login} className="relative">
+    <form action={doSocialLogin} className="relative">
       <button className="" type="submit" name="action" value="google">
         <img src="./google.jpg" className="w-8 mr-12 mb-1 rounded-full h-8" />
       </button>

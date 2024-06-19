@@ -40,7 +40,7 @@ const LoginForm = () => {
         <div className="my-2">
           <label htmlFor="email">Email Address</label>
           <input
-            className="border mx-2 border-gray-500 rounded"
+            className="border mx-2 p-1 bg-zinc-900 border-blue-100 rounded"
             type="email"
             name="email"
             id="email"
@@ -50,7 +50,7 @@ const LoginForm = () => {
         <div className="my-2">
           <label htmlFor="password">Password</label>
           <input
-            className="border mx-2 border-gray-500 rounded"
+            className="border mx-2 p-1 bg-zinc-900 border-blue-100 rounded"
             type="password"
             name="password"
             id="password"
@@ -59,7 +59,7 @@ const LoginForm = () => {
 
         <button
           type="submit"
-          className="bg-orange-300 mt-4 rounded flex justify-center items-center w-36"
+          className="bg-zinc-900 text-blue-100 border-2 border-blue-100 mt-4 rounded flex justify-center items-center w-36"
         >
           Credential Login
         </button>

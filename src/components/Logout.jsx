@@ -1,10 +1,10 @@
-import { logout } from "@/app/actions";
+import { doLogout } from "@/app/actions";
 
 const Logout = () => {
   return (
-    <form action={logout} className="">
+    <form action={doLogout}>
       <button
-        className=" my-2 text-blue-800 p-1 px-4 border-blue-800 border-2 hover:text-opacity-80 rounded "
+        className="bg-zinc-900 my-2 text-blue-100 p-2 border-gray-200 border-2 rounded"
         type="submit"
       >
         Logout
