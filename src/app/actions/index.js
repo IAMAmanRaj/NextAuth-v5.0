@@ -1,11 +1,11 @@
-
-'use server'
+"use server";
 
 import { signIn, signOut } from "@/auth";
+import { LoginFormSchema } from "@/lib/definitions";
 
 export async function doSocialLogin(formData) {
-    const action = formData.get('action');
-    await signIn(action, { redirectTo: "/home" });
+  const action = formData.get("action");
+  await signIn(action, { redirectTo: "/home" });
 }
 
 export async function doLogout() {
@@ -13,16 +13,36 @@ export async function doLogout() {
 }
 
 export async function doCredentialLogin(formData) {
-  console.log("formData", formData);
+  const email = formData.get("email");
+  const password = formData.get("password");
+
+  const validationResult = LoginFormSchema.safeParse({
+    email,
+    password,
+  });
+
+  if (!validationResult.success) {
+    return {
+      success: false,
+      errors: validationResult.error.flatten().fieldErrors,
+    };
+  }
 
   try {
     const response = await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
+      email,
+      password,
       redirect: false,
     });
-    return response;
+
+    if (response.error) {
+      return { success: false, message: response.error };
+    }
+
+    return { success: true, data: response };
   } catch (err) {
-    throw err;
+    console.error("Login error:", err);
+
+    return { success: false, message: "Invalid email or password." };
   }
 }

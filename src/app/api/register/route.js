@@ -1,35 +1,65 @@
-import { NextResponse } from "next/server";
 import { createUser } from "@/queries/users";
-
 import bcrypt from "bcryptjs";
 import { dbConnect } from "@/lib/mongo";
+import { SignupFormSchema } from "@/lib/definitions";
+import { NextResponse } from "next/server";
 
 export const POST = async (request) => {
-  const {name, email, password} = await request.json();
+  const { name, email, password } = await request.json();
 
-  console.log(name, email, password);
+  const validationResult = SignupFormSchema.safeParse({
+    name,
+    email,
+    password,
+  });
 
-  // Create a DB Conenction
+  if (!validationResult.success) {
+    return NextResponse.json(
+      {
+        success: false,
+        errors: validationResult.error.flatten().fieldErrors,
+      },
+      { status: 400 }
+    );
+  }
+
   await dbConnect();
-  // Encrypt the password
-  const hashedPassword = await bcrypt.hash(password, 5);
-  // Form a DB payload
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   const newUser = {
     name,
     password: hashedPassword,
-    email
-  }
-  // Update the DB
+    email,
+  };
+
   try {
-    await createUser(newUser);
+    const response = await createUser(newUser);
+    if (response.error) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: response.error,
+        },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: "User has been created",
+      },
+      { status: 201 }
+    );
   } catch (err) {
-    return new NextResponse(error.mesage, {
-      status: 500,
-    });
+    console.error("Error creating user:", err);
+    return NextResponse.json(
+      {
+        success: false,
+        message: "User not registered",
+      },
+      { status: 500 }
+    );
   }
-
-  return new NextResponse("User has been created", {
-    status: 201,
-  });
-
- }
+};
