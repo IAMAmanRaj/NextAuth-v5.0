@@ -33,7 +33,9 @@ const LoginForm = () => {
       >
         <div className="my-2 flex flex-col gap-1 w-full">
           <div className=" flex flex-row justify-between items-center w-full">
-            <label htmlFor="email">Email Address</label>
+            <label className="roboto " htmlFor="email">
+              Email Address
+            </label>
             <input
               className="border mx-2 p-1 bg-zinc-900 border-blue-100 rounded"
               type="email"
@@ -47,7 +49,9 @@ const LoginForm = () => {
 
         <div className="my-2 flex flex-col w-full">
           <div className="flex flex-row justify-between items-center">
-            <label htmlFor="password">Password</label>
+            <label className="roboto " htmlFor="password">
+              Password
+            </label>
             <input
               className="border mx-2 p-1 bg-zinc-900 border-blue-100 rounded"
               type="password"

@@ -1,6 +1,20 @@
-## Next Auth(Version 5)
+# Next.js Authentication with NextAuth.js
 
-This repository contains the source code for smooth authentication using various ways as laid out by Next Auth v5.0. You will find various Next-Auth implementation details and the source code in this repository.
+This project demonstrates how to implement authentication in a Next.js application using NextAuth.js with various authentication providers.
+
+## Features
+
+- **Session Strategy**: The `session: { strategy: 'jwt' }` configuration specifies that NextAuth.js is using JSON Web Tokens (JWT) for session management. After a user is authenticated, a JWT is issued and used to manage the session state.
+
+  - **Providers**: This application supports authentication via Google, GitHub, and custom credentials (email/password):
+
+  - **GoogleProvider** and **GitHubProvider**: OAuth providers configured with `clientId` and `clientSecret` for integration with Google and GitHub.
+
+  - **CredentialsProvider**: Custom provider with an `authorize` function to handle email/password authentication. It uses bcrypt for secure password comparison against credentials stored in the database.
+
+- **Custom Authentication Logic**: The `authorize` function in `CredentialsProvider` validates user credentials and returns the user object upon successful authentication. It includes error handling for cases where the user is not found or the password does not match, ensuring robust security and a smooth authentication flow.
+
+- **Environment Variables**: Sensitive information like `clientId` and `clientSecret` for Google and GitHub providers are stored in environment variables (`process.env`) to maintain security and prevent exposing credentials in the source code.
 
 ## How to Set up and Run Locally
 
@@ -38,3 +52,11 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Notes:
+
+- Replace placeholders like `your-google-client-id`, `your-google-client-secret`, `your-github-client-id`, `your-github-client-secret`, and `YOUR OWN DATABASE CONNECTION STRING` with your actual credentials and MongoDB URI.
+- Provide additional instructions or configuration details specific to your application if necessary.
+- Include any additional dependencies or libraries used in your project in the "Features" or "Getting Started" sections as needed.
+
+This `README.md` file provides a clear overview of your Next.js authentication application, guiding users on setting up and running the project locally, and pointing them to relevant documentation for further learning. Adjust it according to your specific application requirements and deployment environment.
