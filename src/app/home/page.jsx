@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 
 const HomePage = async () => {
   const session = await auth();
+  console.log(session?.user);
 
   if (!session?.user) redirect("/");
 

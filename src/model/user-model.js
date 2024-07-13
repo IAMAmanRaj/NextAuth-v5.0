@@ -14,5 +14,4 @@ const userSchema = new Schema({
     type: String,
   },
 });
-
-export const User = mongoose.models.User ?? mongoose.model("User", userSchema);
+export const User = mongoose.models?.User || mongoose.model("User", userSchema);

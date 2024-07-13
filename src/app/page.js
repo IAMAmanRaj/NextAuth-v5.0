@@ -1,5 +1,8 @@
 import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
+import { auth } from "@/auth";
+
+import { redirect } from "next/navigation";
 export default function Home() {
   return (
     <div className="flex flex-col text-gray-300  bg-black h-screen justify-center items-center">
